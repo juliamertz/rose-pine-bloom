@@ -7,6 +7,12 @@ import (
 	"text/template"
 )
 
+type Variants struct {
+	Main *Palette
+	Moon *Palette
+	Dawn *Palette
+}
+
 type Values struct {
 	Id          string
 	Name        string
