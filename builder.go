@@ -57,7 +57,7 @@ func generateThemes(cfg *Config) error {
 	return nil
 }
 
-func generateThemeFile(cfg *Config, templatePath string, content []byte, variant Variant, accent string) error {
+func generateThemeFile(cfg *Config, templatePath string, content []byte, variant VariantMeta, accent string) error {
 	result := processTemplate(string(content), cfg, variant, accent)
 
 	if filepath.Ext(templatePath) == ".json" {
@@ -90,7 +90,7 @@ func createTemplates(cfg *Config) error {
 		matchFound := false
 
 		// Replace colors with variables
-		for colorName, color := range variant.colors {
+		for colorName, color := range variant.colors.Iter() {
 			colorValue := formatColor(color, ColorFormat(cfg.Format), cfg.Plain, cfg.Commas, cfg.Spaces)
 			before := result
 			result = strings.ReplaceAll(result, colorValue, cfg.Prefix+colorName)
@@ -123,7 +123,7 @@ func createTemplates(cfg *Config) error {
 	return nil
 }
 
-func processTemplate(content string, cfg *Config, variant Variant, accent string) string {
+func processTemplate(content string, cfg *Config, variant VariantMeta, accent string) string {
 	result := content
 
 	// Replace metadata
@@ -138,13 +138,13 @@ func processTemplate(content string, cfg *Config, variant Variant, accent string
 		result = strings.ReplaceAll(result, cfg.Prefix+"accentname", accent)
 		result = strings.ReplaceAll(result, cfg.Prefix+"accent", cfg.Prefix+accent)
 
-		if color, ok := variant.colors[accent]; ok && color.On != "" {
+		if color, ok := variant.colors.Get(accent); ok && color.On != "" {
 			result = strings.ReplaceAll(result, cfg.Prefix+"onaccent", cfg.Prefix+color.On)
 		}
 	}
 
 	// Replace colors and handle alpha variants
-	for colorName, color := range variant.colors {
+	for colorName, color := range variant.colors.Iter() {
 		varName := cfg.Prefix + colorName
 
 		// Handle alpha variants (e.g. $base/50)
@@ -183,16 +183,16 @@ func processTemplate(content string, cfg *Config, variant Variant, accent string
 	return result
 }
 
-func getVariant(create string) Variant {
+func getVariant(create string) VariantMeta {
 	switch create {
 	case "main":
-		return MainVariant
+		return MainVariantMeta
 	case "moon":
-		return MoonVariant
+		return MoonVariantMeta
 	case "dawn":
-		return DawnVariant
+		return DawnVariantMeta
 	default:
-		return MainVariant
+		return MainVariantMeta
 	}
 }
 
@@ -231,7 +231,7 @@ func writeFile(outputPath string, content []byte) error {
 	return os.WriteFile(outputPath, content, 0644)
 }
 
-func buildOutputPath(cfg *Config, templatePath string, variant Variant, accent string) string {
+func buildOutputPath(cfg *Config, templatePath string, variant VariantMeta, accent string) string {
 	ext := filepath.Ext(templatePath)
 	var outputFile, outputDir string
 
