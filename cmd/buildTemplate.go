@@ -9,7 +9,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// buildTemplateCmd represents the buildTemplate command
 var buildTemplateCmd = &cobra.Command{
 	Use:   "build-template [flags] <input>",
 	Short: "Builds the template file from a given theme file",
@@ -36,7 +35,6 @@ var buildTemplateCmd = &cobra.Command{
 }
 
 func init() {
-
 	buildTemplateCmd.Flags().StringVarP(&outputDir, "output", "o", "dist", "Directory for generated files")
 	buildTemplateCmd.Flags().StringVarP(&prefix, "prefix", "p", "$", "Color variable prefix")
 	buildTemplateCmd.Flags().StringVarP(&format, "format", "f", "hex", formatFlagUsage())
