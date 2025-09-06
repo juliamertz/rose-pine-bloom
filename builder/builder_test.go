@@ -521,7 +521,7 @@ func TestCreate(t *testing.T) {
 	cfg.Output = tmpDir
 	cfg.Input = filePath
 
-	if err := BuildTemplate(&cfg); err != nil {
+	if err := DeriveTemplate(&cfg); err != nil {
 		t.Fatal(err)
 	}
 

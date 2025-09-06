@@ -52,7 +52,6 @@ var buildCmd = &cobra.Command{
 }
 
 func init() {
-
 	buildCmd.Flags().StringVarP(&outputDir, "output", "o", "dist", "Directory for generated files")
 	buildCmd.Flags().StringVarP(&prefix, "prefix", "p", "$", "Color variable prefix")
 	buildCmd.Flags().StringVarP(&format, "format", "f", "hex", formatFlagUsage())
@@ -61,5 +60,4 @@ func init() {
 	buildCmd.Flags().BoolVar(&noSpaces, "no-spaces", false, "Remove spaces from color values")
 
 	rootCmd.AddCommand(buildCmd)
-
 }

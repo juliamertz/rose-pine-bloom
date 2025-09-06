@@ -8,7 +8,6 @@ import (
 	"github.com/spf13/cobra/doc"
 )
 
-// docCmd represents the doc command
 var docCmd = &cobra.Command{
 	Use:   "doc <output_directory>",
 	Short: "Generates documentation",

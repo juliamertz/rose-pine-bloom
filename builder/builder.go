@@ -35,7 +35,7 @@ func FindTemplate() (string, error) {
 	return "", fmt.Errorf("unable to find template file")
 }
 
-func BuildTemplate(cfg *config.BuildTemplateConfig) error {
+func DeriveTemplate(cfg *config.BuildTemplateConfig) error {
 	if err := os.MkdirAll(cfg.Output, 0755); err != nil {
 		return fmt.Errorf("failed to create output directory: %w", err)
 	}
