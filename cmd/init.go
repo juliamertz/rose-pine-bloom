@@ -5,11 +5,12 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"regexp"
 	"strings"
 	"time"
 
-	"github.com/rose-pine/rose-pine-bloom/builder"
+	"github.com/rose-pine/rose-pine-bloom/derive"
 	"github.com/spf13/cobra"
 )
 
@@ -33,19 +34,18 @@ var initCmd = &cobra.Command{
 		themeFile := args[0]
 		fmt.Printf("Creating template from %s...\n", themeFile)
 
-		opts := &builder.TemplateOptions{
+		opts := &derive.DeriveOpts{
 			Input:   themeFile,
 			Output:  output,
 			Variant: variant,
 			Prefix:  prefix,
 		}
-		if err := builder.BuildTemplate(opts); err != nil {
+		if err := derive.DeriveTemplate(opts); err != nil {
 			fmt.Fprintf(os.Stderr, "Error creating template: %v\n", err)
 			os.Exit(1)
 		}
-
-		templatePath := opts.TemplatePath
 		fmt.Printf("Template created in %s\n", output)
+		templatePath := filepath.Join(output, "template"+filepath.Ext(themeFile))
 
 		if err := ensureReadme(templatePath, prefix); err != nil {
 			fmt.Fprintf(os.Stderr, "Error updating README: %v\n", err)
