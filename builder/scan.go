@@ -65,9 +65,9 @@ func isAsciiDigit(b byte) bool {
 }
 
 type Scanner struct {
-	Content     string
-	Opts        ScannerOpts
-	pos         uint
+	Content string
+	Opts    ScannerOpts
+	pos     uint
 }
 
 func (s *Scanner) curr() (byte, bool) {
@@ -179,11 +179,15 @@ func (s *Scanner) scanRoleCapture(start uint, role string) (RoleCapture, error) 
 					break
 				}
 			}
-			parsed, err := strconv.ParseInt(s.Content[alphaStart:s.pos], 10, 32)
-			if err == nil {
-				value := float64(parsed) / 100
-				alpha = &value
+
+			alphaText := s.Content[alphaStart:s.pos]
+			parsed, err := strconv.ParseInt(alphaText, 10, 32)
+			if err != nil {
+				return RoleCapture{}, fmt.Errorf("failed to parse role alpha, invalid integer: `%s`", alphaText)
 			}
+
+			value := float64(parsed) / 100
+			alpha = &value
 		}
 	}
 	return RoleCapture{
