@@ -7,10 +7,7 @@ const (
 
 func Lighten(color *Color, steps uint8) Color {
 	stepSize := (maxLightness - color.HSL.L) / maxSteps
-	l := color.HSL.L + steps*stepSize
-	if l > maxLightness || l < color.HSL.L {
-		l = maxLightness
-	}
+	l := min(color.HSL.L+steps*stepSize, maxLightness)
 
 	return ColorFromHSL(HSL{
 		H: color.HSL.H,
