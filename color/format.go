@@ -53,8 +53,6 @@ func FormatColor(c *Color, format ColorFormat, plain bool, commas bool, spaces b
 		}
 	}
 
-
-
 	switch format {
 	case FormatHex:
 		{

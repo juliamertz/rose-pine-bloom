@@ -38,7 +38,7 @@ func hslToRgb(hsl *HSL) RGB {
 
 func ColorFromHSL(hsl HSL) Color {
 	return Color{
-		HSL:   hsl,
-		RGB:   hslToRgb(&hsl),
+		HSL: hsl,
+		RGB: hslToRgb(&hsl),
 	}
 }
